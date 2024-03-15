@@ -1,0 +1,869 @@
+{
+    "info": {
+        "_postman_id": "f031b1af-c138-4621-b0fd-68dd83a49314",
+        "name": "Sample Laravel API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "12852731",
+        "_collection_link": "https://lively-robot-747253.postman.co/workspace/GorKa~f8fe25b7-9136-4d0a-be40-64bded016d71/collection/12852731-f031b1af-c138-4621-b0fd-68dd83a49314?action=share&creator=12852731&source=collection_link"
+    },
+    "item": [
+        {
+            "name": "Common",
+            "item": [
+                {
+                    "name": "Authentication",
+                    "item": [
+                        {
+                            "name": "User Sanctum Login",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "email",
+                                            "value": "super.admin@sample.gorka.biz.ua",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "admin@sample.gorka.biz.ua",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "19dynamo27@gmail.com",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "password",
+                                            "value": "password",
+                                            "type": "text"
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:8000/api/auth/login",
+                                    "protocol": "http",
+                                    "host": [
+                                        "127",
+                                        "0",
+                                        "0",
+                                        "1"
+                                    ],
+                                    "port": "8000",
+                                    "path": [
+                                        "api",
+                                        "auth",
+                                        "login"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Show Authenticated User",
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true,
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "login",
+                                            "value": "super.admin@riding-school.com",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "login",
+                                            "value": "admin@riding-school.com",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "login",
+                                            "value": "19dynamo27@gmail.com",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "login",
+                                            "value": "+380 67 123-45-67",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "password",
+                                            "value": "password",
+                                            "type": "text"
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/auth/user",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "user"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "User Sanctum Logout",
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true,
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": []
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/auth/logout",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "logout"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "User Registration",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "noauth"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"first_name\": \"John\",\r\n    \"last_name\": \"Doe\",\r\n    \"email\": \"test@email.com\",\r\n    \"password\": \"sdbv;pld=[fb0k-f0bkr-fbkrdmbl;,mbl;,b\",\r\n    \"password_confirmation\": \"sdbv;pld=[fb0k-f0bkr-fbkrdmbl;,mbl;,b\"\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/auth/register",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "register"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "User Forgot Password",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "noauth"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "email",
+                                            "value": "super.admin@sample.gorka.biz.ua",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "admin@sample.gorka.biz.ua",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "19dynamo27@gmail.com",
+                                            "type": "text",
+                                            "disabled": true
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/password/forgot",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "password",
+                                        "forgot"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "User Reset Password Validation",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "noauth"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "token",
+                                            "value": "1db7457b2fa7f3d9b82680967572d2a4cc5058b76e7792a0c82d3a3ad5dec75e",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "super.admin@sample.gorka.biz.ua",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "admin@sample.gorka.biz.ua",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "19dynamo27@gmail.com",
+                                            "type": "text",
+                                            "disabled": true
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/password/reset/validate",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "password",
+                                        "reset",
+                                        "validate"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "User Reset Password Confirmation",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "noauth"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "token",
+                                            "value": "",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "super.admin@sample.gorka.biz.ua",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "admin@sample.gorka.biz.ua",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "email",
+                                            "value": "19dynamo27@gmail.com",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "password",
+                                            "value": "asc9a4s694e94923684ce9e4",
+                                            "type": "text",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "password_confirmation",
+                                            "value": "asc9a4s694e94923684ce9e4",
+                                            "type": "text",
+                                            "disabled": true
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/password/reset/validate",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "password",
+                                        "reset",
+                                        "validate"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Helpers",
+                    "item": [
+                        {
+                            "name": "Show Roles List",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/helpers/lists/roles",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "helpers",
+                                        "lists",
+                                        "roles"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Show Users List",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/helpers/lists/users",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "helpers",
+                                        "lists",
+                                        "users"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Admin",
+            "item": [
+                {
+                    "name": "Users",
+                    "item": [
+                        {
+                            "name": "Show User Items Collection",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/users",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "users"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "page",
+                                            "value": "2",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "per_page",
+                                            "value": "1",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "sort",
+                                            "value": "desc",
+                                            "description": "asc, desc",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "order_by",
+                                            "value": "",
+                                            "description": "id",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "full_name",
+                                            "value": "",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "roles",
+                                            "value": "",
+                                            "disabled": true
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Show User Item",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/users/3",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "3"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Show User Item Edit Info",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/users/3/edit",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "3",
+                                        "edit"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create User Item",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {
+                                    "accept": true
+                                }
+                            },
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "{{user_timezone_header_name}}",
+                                        "value": "{{user_timezone_header_value}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"first_name\": \"John\",\r\n    \"last_name\": \"Doe\",\r\n    \"email\": \"test@email.com\",\r\n    \"password\": \"sdbv;pld=[fb0k-f0bkr-fbkrdmbl;,mbl;,b\",\r\n    \"password_confirmation\": \"sdbv;pld=[fb0k-f0bkr-fbkrdmbl;,mbl;,b\"\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/users",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "users"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update User Item",
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "PATCH",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"first_name\": \"Johns\",\r\n    \"last_name\": \"Does\",\r\n    \"email\": \"testik@email.com\",\r\n    \"password\": \"vs6dv536s5dv465s4dfv6de4\",\r\n    \"password_confirmation\": \"vs6dv536s5dv465s4dfv6de4\"\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/users/3",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "3"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete User Item",
+                            "request": {
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{auth_token}}",
+                                            "type": "string"
+                                        }
+                                    ]
+                                },
+                                "method": "DELETE",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/users/3",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "3"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Client",
+            "item": []
+        }
+    ]
+}

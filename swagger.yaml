@@ -1,0 +1,1020 @@
+openapi: 3.0.0
+info:
+  description: Laravel Sample API
+  version: 1.0.0
+  title: Laravel Sample API
+  contact:
+    name: Vlad Horpynych
+    email: 19dynamo27@gmail.com
+  license:
+    name: Proprietary
+
+servers:
+  - url: http://sample.gorka.biz.ua/api
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    Accept:
+      in: header
+      name: Accept
+      schema:
+        type: string
+        default: application/json
+    AcceptEncoding:
+      in: header
+      name: Accept-Encoding
+      schema:
+        type: string
+        default: gzip, deflate, br
+    ContentType:
+      in: header
+      name: Content-Type
+      schema:
+        type: string
+        default: application/json
+
+  responses:
+    CommonSuccess:
+      description: Request completed successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonSuccess'
+    CommonError:
+      description: Request completed unsuccessfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonError'
+    UnauthenticatedError:
+      description: Request must be authenticated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthenticatedError'
+    AccessDeniedError:
+      description: Can not get access to requested method
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessDeniedError'
+    MethodNotFoundError:
+      description: Requested method not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MethodNotFoundError'
+    ItemNotFoundError:
+      description: Requested item not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ItemNotFoundError'
+    ValidationError:
+      description: The request contains data that did not pass validation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    TooManyRequestsError:
+      description: The request contains data that did not pass validation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TooManyRequestsError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
+
+  schemas:
+    CommonSuccess:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Success!
+      required:
+        - success
+        - message
+    CommonError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Error! Bad request.
+      required:
+        - success
+        - message
+    UnauthenticatedError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Unauthenticated.
+      required:
+        - success
+        - message
+    AccessDeniedError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Error! Access denied.
+      required:
+        - success
+        - message
+    MethodNotFoundError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Error! Method not found.
+      required:
+        - success
+        - message
+    ItemNotFoundError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Error! Item not found.
+      required:
+        - success
+        - message
+    ValidationError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Error! The given data was invalid.
+        errors:
+          type: object
+          example:
+            sample_field: The 'sample field' is invalid.
+      required:
+        - success
+        - message
+        - errors
+    TooManyRequestsError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Error! Too many requests, try again later.
+      required:
+        - success
+        - message
+    InternalServerError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Internal server error, try again later.
+      required:
+        - success
+        - message
+
+paths:
+  ###
+  # Common paths
+  ###
+
+  ### Authentication paths
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login
+      operationId: login
+      description: ''
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: Email
+                  type: string
+                  format: email
+                password:
+                  description: Password
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        example: You are successfully logged in!
+                      data:
+                        type: object
+                        example:
+                          id: 1
+                          first_name: Admin
+                          last_name: Super
+                          email: super.admin@sample.gorka.biz.ua
+                          phone: null
+        '401':
+          description: Request completed unsuccessfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UnauthenticatedError'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        example: These credentials do not match our records.
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /auth/logout:
+    get:
+      tags:
+        - Authentication
+      summary: Logout
+      operationId: logout
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+      responses:
+        '200':
+          description: Successfully logout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: You are successfully logged out!
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /auth/user:
+    get:
+      tags:
+        - Authentication
+      summary: Get authenticated user
+      operationId: get_authenticated_user
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          id: 1
+                          first_name: Admin
+                          last_name: Super
+                          email: super.admin@sample.gorka.biz.ua
+                          phone: null
+                          roles:
+                            - id: 1
+                              name: super-admin
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Login
+      operationId: login
+      description: ''
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  description: First name
+                  type: string
+                last_name:
+                  description: Last name
+                  type: string
+                email:
+                  description: Email
+                  type: string
+                  format: email
+                password:
+                  description: Password
+                  type: string
+                  format: password
+                password_confirmation:
+                  description: Password confirmation
+                  type: string
+                  format: password
+              required:
+                - first_name
+                - email
+                - password
+                - password_confirmation
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        example: You are successfully logged in!
+                      data:
+                        type: object
+                        example:
+                          id: 1
+                          login: sample@email.com
+                          locale: en_US
+                          is_active: true
+        '401':
+          description: Request completed unsuccessfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/UnauthenticatedError'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        example: These credentials do not match our records.
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /auth/forgot:
+    post:
+      tags:
+        - Authentication
+      summary: Forgot password
+      operationId: forgot_password
+      description: ''
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: Email
+                  type: string
+                  format: email
+              required:
+                - email
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        example: The letter for password recovery will be sent to the mail if it exists in the system.
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Please wait before retrying.
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /auth/reset/validate:
+    post:
+      tags:
+        - Authentication
+      summary: Validate reset password token
+      operationId: validate_reset_password_token
+      description: ''
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                token:
+                  description: Token
+                  type: string
+                email:
+                  description: Email
+                  type: string
+                  format: email
+              required:
+                - token
+                - email
+      responses:
+        '200':
+          $ref: '#/components/responses/CommonSuccess'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /auth/reset:
+    post:
+      tags:
+        - Authentication
+      summary: Reset password
+      operationId: reset_password
+      description: ''
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                token:
+                  description: Token
+                  type: string
+                email:
+                  description: Email
+                  type: string
+                  format: email
+                password:
+                  description: Password
+                  type: string
+                  format: password
+                password_confirmation:
+                  description: Password confirmation
+                  type: string
+                  format: password
+              required:
+                - token
+                - email
+                - password
+                - password_confirmation
+      responses:
+        '200':
+          $ref: '#/components/responses/CommonSuccess'
+        '422':
+          description: The request contains data that did not pass validation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        example: This password token is invalid or expired.
+
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  ### Helpers paths
+  /helpers/lists/roles:
+    get:
+      tags:
+        - Helpers
+      summary: Get roles list
+      operationId: get_roles_list
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          - id: 1
+                            name: Admin
+                          - id: 2
+                            name: Manager
+                          - id: 3
+                            name: Client
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /helpers/lists/users:
+    get:
+      tags:
+        - Helpers
+      summary: Get users list
+      operationId: get_users_list
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          - id: 1
+                            first_name: Admin
+                            last_name: Super,
+                            full_name: Admin Super
+                          - id: 2
+                            first_name: John
+                            last_name: Doe,
+                            full_name: John K. Doe
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  ###
+  # Admin paths
+  ###
+
+  ### Users paths
+  /users:
+    parameters:
+      # Headers
+      - $ref: '#/components/parameters/Accept'
+      - $ref: '#/components/parameters/AcceptEncoding'
+      - $ref: '#/components/parameters/ContentType'
+    get:
+      tags:
+        - Users
+      summary: Get users collection
+      operationId: get_users_collection
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        # Query
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          description: Results per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: sort
+          in: query
+          description: Sorts order (asc or desc)
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - name: order_by
+          in: query
+          description: Order by field
+          required: false
+          schema:
+            type: string
+            default: id
+        - name: full_name
+          in: query
+          description: Filter by full name
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: roles
+          in: query
+          description: Filter by role(s)
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          - id: 1
+                            first_name: Admin
+                            last_name: Super
+                            email: super.admin@sample.gorka.biz.ua
+                            phone: null
+                            roles:
+                              - id: 1
+                                name: super-admin
+                          - id: 1
+                            first_name: John
+                            last_name: Doe
+                            email: john.doe@sample.gorka.biz.ua
+                            phone: null
+                            roles:
+                              - id: 3
+                                name: client
+                      meta:
+                        type: object
+                        example:
+                          current_page: 1,
+                          from: 1,
+                          last_page: 1,
+                          per_page: 10,
+                          to: 2,
+                          total: 2
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/AccessDeniedError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Users
+      summary: Create user
+      operationId: create_user
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  description: First name
+                  type: string
+                last_name:
+                  description: Last name
+                  type: string
+                email:
+                  description: Email
+                  type: string
+                  format: email
+                password:
+                  description: Password
+                  type: string
+                  format: password
+                password_confirmation:
+                  description: Password confirmation
+                  type: string
+                  format: password
+              required:
+                - first_name
+                - email
+                - password
+                - password_confirmation
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          id: 1
+                          first_name: Test
+                          last_name: User
+                          email: test@sample.gorka.biz.ua
+                          phone: null
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/AccessDeniedError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/{id}:
+    parameters:
+      # Headers
+      - $ref: '#/components/parameters/Accept'
+      - $ref: '#/components/parameters/AcceptEncoding'
+      - $ref: '#/components/parameters/ContentType'
+      # Path
+      - name: id
+        in: path
+        description: ID
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - Users
+      summary: Get user
+      operationId: get_user
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          id: 1
+                          first_name: Admin
+                          last_name: Super
+                          email: super.admin@sample.gorka.biz.ua
+                          phone: null
+                          roles:
+                            - id: 1
+                              name: super-admin
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/AccessDeniedError'
+        '404':
+          $ref: '#/components/responses/ItemNotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - Users
+      summary: Update user
+      operationId: update_user
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  description: First name
+                  type: string
+                last_name:
+                  description: Last name
+                  type: string
+                email:
+                  description: Email
+                  type: string
+                  format: email
+                password:
+                  description: Password
+                  type: string
+                  format: password
+                password_confirmation:
+                  description: Password confirmation
+                  type: string
+                  format: password
+      responses:
+        '200':
+          $ref: '#/components/responses/CommonSuccess'
+        '400':
+          $ref: '#/components/responses/CommonError'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/AccessDeniedError'
+        '404':
+          $ref: '#/components/responses/ItemNotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Users
+      summary: Delete user
+      operationId: delete_user
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          $ref: '#/components/responses/CommonSuccess'
+        '400':
+          $ref: '#/components/responses/CommonError'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/AccessDeniedError'
+        '404':
+          $ref: '#/components/responses/ItemNotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/{id}/edit:
+    get:
+      tags:
+        - Users
+      summary: Get user edit info
+      operationId: get_user_edit_info
+      description: ''
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        # Headers
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/AcceptEncoding'
+        - $ref: '#/components/parameters/ContentType'
+        # Path
+        - name: id
+          in: path
+          description: ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Request completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CommonSuccess'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          id: 1
+                          first_name: Admin
+                          last_name: Super
+                          email: super.admin@sample.gorka.biz.ua
+                          phone: null
+        '401':
+          $ref: '#/components/responses/UnauthenticatedError'
+        '403':
+          $ref: '#/components/responses/AccessDeniedError'
+        '404':
+          $ref: '#/components/responses/ItemNotFoundError'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
